@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebAppEka.Models.emp_apu>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Go to the highest boss", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TitleOfCourtesy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ReportsTo)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+       
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TitleOfCourtesy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReportsTo)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeID }) |
+                    @Html.ActionLink("View person's employees", "FilteredView", new { id = item.EmployeeID }) |) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID })
+                </td>
+            </tr>
+        
+    }
+
+</table>
