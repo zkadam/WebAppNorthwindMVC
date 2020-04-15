@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebAppEka.Models.Products>
+@{
+    ViewBag.Title = "Index";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".showProductID").click(function () {
+
+                let productId = $(this).data("productid")
+
+                alert("clickasit produktin id llä: " + productId);
+
+            });
+
+
+        });
+         $(function () {
+            $("#naytaProductID").click(function () {
+
+                let productId = $(this).data("productid")
+
+                alert("clickasit produktin id llä: " + productId);
+
+            });
+
+
+        });
+
+
+    </script>
+    
+    }
+
+
+
+<h2>Tuotteet</h2>
+
+<table class="table-hover" >
+    <tr>
+    <thead>
+    <th>Tuote ID </th>
+    <th>Tuotteen nimi </th>
+    <th>A-hinta </th>
+    <th>Varastomäärä </th>
+    <th>Tilauksessa määrä </th>
+
+    </thead>
+    </tr>
+    <tbody>
+        @foreach (WebAppEka.Models.Products tuote in Model)
+        {
+        <tr>
+            <td>@tuote.ProductID</td>
+            <td>@tuote.ProductName</td>
+            <td>@String.Format("{0:F2}",tuote.UnitPrice)</td>
+            <td>@tuote.UnitsInStock</td>
+            <td>@tuote.UnitsOnOrder</td>
+            <td ><button class="btn btn-primary"  onclick='naytaValittuTuote("@tuote.ProductName")'>muokkaa eka</button></td>
+            <td><button class="btn btn-warning showProductID" data-productid="@tuote.ProductID">muokkaa toka</button></td>
+            <td><button class="btn btn-success" id="naytaProductID" data-productid="@tuote.ProductID">muokkaa kolmas</button></td>
+        </tr>
+    }
+        </tbody>
+
+
+    </table>
+
+<script>
+    function naytaValittuTuote(tuotepara) {
+        alert("klikkasit tätä tuotetta: " + tuotepara);
+    }
+</script>
+
+@*@foreach (WebAppEka.Models.Products tuote in Model)
+{
+    <p>@tuote.ProductName</p>
+
+}
+<h4>@Model.Count() riviä</h4>*@
+

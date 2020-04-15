@@ -902,7 +902,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Laskuri.cshtml" />
     <Content Include="Views\Home\Map.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Index_old.cshtml" />
     <Content Include="Views\Shippers\Index.cshtml" />
     <Content Include="Views\Shippers\Edit.cshtml" />
     <Content Include="Views\Shippers\Create.cshtml" />
@@ -931,6 +931,7 @@
     <Content Include="Views\emp_apu\Edit.cshtml" />
     <Content Include="Views\emp_apu\Index.cshtml" />
     <Content Include="Views\emp_apu\FilteredView.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
