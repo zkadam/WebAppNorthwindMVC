@@ -17,8 +17,18 @@ namespace WebAppEka.Controllers
         // GET: Employees
         public ActionResult Index()
         {
+            if (Session["UserName"] == null)
+            {
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                return RedirectToAction("login", "home", new { actionName = actionName, controllerName = controllerName });
+            }
+            else
+            {
             var employees = db.Employees.Include(e => e.Employees2);
             return View(employees.ToList());
+
+            }
         }
 
         // GET: Employees/Details/5

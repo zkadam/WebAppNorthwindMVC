@@ -10,21 +10,23 @@ namespace WebAppEka.Controllers
     public class ProductsController : Controller
     {
         // GET: Products
-        public ActionResult Index(string searchString1)
+        public ActionResult Index()
         {
             if (Session["UserName"] == null)
             {
-                return RedirectToAction("login", "home");
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                return RedirectToAction("login", "home", new {actionName=actionName, controllerName=controllerName });
             }
             else
             {
                 northwindEntities db = new northwindEntities();
                 var tuotteet = from p in db.Products
                                select p;
-                if (!String.IsNullOrEmpty(searchString1))
-                {
-                    tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1));
-                }
+                //if (!String.IsNullOrEmpty(searchString1))
+                //{
+                //    tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1));
+                //}
                 
                 
                                                     //needs a using sentence
