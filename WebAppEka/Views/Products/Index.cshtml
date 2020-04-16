@@ -1,4 +1,12 @@
-﻿@model IEnumerable<WebAppEka.Models.Products>
+﻿@*@model IEnumerable<WebAppEka.Models.Products>*@
+
+@model PagedList.IPagedList<WebAppEka.Models.Products>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+
+
 
 @{
     ViewBag.Title = "Index";
@@ -25,14 +33,20 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProductName)
+            @Html.ActionLink("Tuotteen nimi", "Index", new { sortOrder = ViewBag.ProductNameSortParm })
         </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.QuantityPerUnit)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UnitPrice)
+            @Html.ActionLink("A-hinta", "Index", new { sortOrder=ViewBag.UnitPriceSortParm})
         </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.UnitsInStock)
         </th>
@@ -96,3 +110,7 @@
 }
 
 </table>
+
+<br/>
+Page@(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1})) 
