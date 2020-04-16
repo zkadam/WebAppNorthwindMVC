@@ -10,7 +10,7 @@ namespace WebAppEka.Controllers
     public class ProductsController : Controller
     {
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter1, string searchString1)
         {
             if (Session["UserName"] == null)
             {
@@ -23,16 +23,16 @@ namespace WebAppEka.Controllers
                 northwindEntities db = new northwindEntities();
                 var tuotteet = from p in db.Products
                                select p;
-                //if (!String.IsNullOrEmpty(searchString1))
-                //{
-                //    tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1));
-                //}
-                
-                
-                                                    //needs a using sentence
-                                                    //List<Products> tuotteet = db.Products.ToList();
-                                                    //**************************dbDispose had to be taken coz of new filterings
-                                                    //db.Dispose();
+                if (!String.IsNullOrEmpty(searchString1))
+                {
+                    tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1));
+                }
+
+
+                //needs a using sentence
+                //List<Products> tuotteet = db.Products.ToList();
+                //**************************dbDispose had to be taken coz of new filterings
+                //db.Dispose();
                 return View(tuotteet);
             }
         }
