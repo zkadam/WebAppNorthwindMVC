@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebAppEka.Models;     //it looks from models
+using PagedList;
 
 namespace WebAppEka.Controllers
 {
     public class ProductsController : Controller
     {
         // GET: Products
-        public ActionResult Index(string sortOrder, string currentFilter1, string searchString1)
+        public ActionResult Index(string sortOrder, string currentFilter1, string searchString1, int? page, int? pagesize)
         {
             //--------------------------------------------------------login checking if no login, sending the action and controller name so later can return here
             if (Session["UserName"] == null)
@@ -56,7 +57,10 @@ namespace WebAppEka.Controllers
                 //List<Products> tuotteet = db.Products.ToList();
                 //**************************dbDispose had to be taken coz of new filterings
                 //db.Dispose();
-                return View(tuotteet);
+
+                int pageSize = (pagesize ?? 10); //tämä palauttaa sivukoon taikka jos pagesize on null, niin palauttaa koon 10 riviä per sivu
+                int pageNumber = (page ?? 1); //Tämä palauttaa sivunumeron taikka jos page on null, niin palauttaa numeron 1
+                return View(tuotteet.ToPagedList(pageNumber, pageSize));
             }
         }
         
