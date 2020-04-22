@@ -28,28 +28,59 @@ namespace WebAppEka.Controllers
                 ViewBag.ProductNameSortParm = String.IsNullOrEmpty(sortOrder) ? "productname_desc" : "";
                 ViewBag.UnitPriceSortParm = sortOrder == "UnitPrice" ? "UnitPrice_desc" : "UnitPrice";
 
+                // jos laitettiin joku searchiin, mene 1.sivuun
+
+                //hakufiltterin muistiin
+                if (searchString1!=null)
+                {
+                    page = 1;
+                }
+                else//muuten annetaan searchstringille filterin arvo - koska filter jää muistossa - sitä aina lehetätään viewin kautta(alhalla oleva acition url)
+                {
+                    searchString1 = currentFilter1;
+                }
+                ViewBag.currentFilter1 = searchString1;
+
                 northwindEntities db = new northwindEntities();
                 var tuotteet = from p in db.Products
                                select p;
-                if (!String.IsNullOrEmpty(searchString1))
+
+                if (!String.IsNullOrEmpty(searchString1))   //jos hakufiltteri on käytössä, niin käytetään sitä ja sen lisäksi lajitellaan tulokset
                 {
-                    tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1));
+                    switch (sortOrder)
+                    {
+                        case "productname_desc":
+                            tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1)).OrderByDescending(p => p.ProductName);
+                            break;
+                        case "UnitPrice":
+                            tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1)).OrderBy(p => p.UnitPrice);
+                            break;
+                        case "UnitPrice_desc":
+                            tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1)).OrderByDescending(p => p.UnitPrice);
+                            break;
+                        default:
+                            tuotteet = tuotteet.Where(p => p.ProductName.Contains(searchString1)).OrderBy(p => p.ProductName);
+                            break;
+                    }
                 }
-                //täälä sitten toteutuu filterointi
-                switch (sortOrder)
+                else //täälä sitten toteutuu filterointi ilman filtteri
                 {
-                    case "productname_desc":
-                        tuotteet = tuotteet.OrderByDescending(p => p.ProductName);
-                        break;
-                    case "UnitPrice":
-                        tuotteet = tuotteet.OrderBy(p => p.UnitPrice);
-                        break;
-                    case "UnitPrice_desc":
-                        tuotteet = tuotteet.OrderByDescending(p => p.UnitPrice);
-                        break;
-                    default:
-                        tuotteet = tuotteet.OrderBy(p => p.ProductName);
-                        break;
+
+                 switch (sortOrder)
+                    {
+                        case "productname_desc":
+                            tuotteet = tuotteet.OrderByDescending(p => p.ProductName);
+                            break;
+                        case "UnitPrice":
+                            tuotteet = tuotteet.OrderBy(p => p.UnitPrice);
+                            break;
+                        case "UnitPrice_desc":
+                            tuotteet = tuotteet.OrderByDescending(p => p.UnitPrice);
+                            break;
+                        default:
+                            tuotteet = tuotteet.OrderBy(p => p.ProductName);
+                            break;
+                    }
                 }
 
 
