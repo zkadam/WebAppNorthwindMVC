@@ -6,6 +6,22 @@
 
 
 
+@section scripts {
+    <script type="text/javascript">
+        $("#singleSelectCategoryID").on("change", function () {
+            //getting value to apumuuttaja
+            var selValue = $("#singleSelectCategoryID").val();
+            console.log(selValue);
+            document.getElementById("ProductCategory").value = selValue;
+        });
+    </script>
+    
+     }
+
+
+
+
+
 
 
 @{
@@ -19,12 +35,19 @@
 </p>
 @using (Html.BeginForm("Index", "Products", FormMethod.Get))
 {
-    <div class="input-group">
-        <p class="px-1">@Html.Label("Find by nam:")</p>
-        <p class="px-1">@Html.TextBox("SearchString1", ViewBag.currentFilter1 as string, new { @class = "form-control" })</p>
-        <p class="px-1"><input type="submit" value="Search" class="form-control" /></p>
+<div class="input-group">
+    <p class="px-1">@Html.Label("Find by name:")</p>
+    <p class="px-1">@Html.TextBox("SearchString1", ViewBag.currentFilter1 as string, new { @class = "form-control" })</p>
+    <p class="px-1">@Html.Label("Find by Product Category:")</p>
+    <p class="px-1">@Html.Hidden("ProductCategory", ViewBag.currentFilter1 as string, new { @id = "ProductCategory", @class = "form-control" })</p>
+    <p class="px-1">@Html.DropDownList("CategoryID",null,htmlAttributes:new { @id = "singleSelectCategoryID", @class = "form-control" })</p>
 
-    </div>
+
+
+
+    <p class="px-1"><input type="submit" value="Search" class="form-control" /></p>
+
+</div>
 
 
 
@@ -33,7 +56,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Tuotteen nimi", "Index", new { sortOrder = ViewBag.ProductNameSortParm, currentFilter1=ViewBag.currentFilter1 })
+            @Html.ActionLink("Tuotteen nimi", "Index", new { sortOrder = ViewBag.ProductNameSortParm, currentFilter1=ViewBag.currentFilter1, currentProductCategory = ViewBag.currentProductCategory })
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.ProductName)
@@ -42,7 +65,7 @@
             QuantityPerUnit
         </th>
         <th>
-            @Html.ActionLink("A-hinta", "Index", new { sortOrder=ViewBag.UnitPriceSortParm, currentFilter1 = ViewBag.currentFilter1 })
+            @Html.ActionLink("A-hinta", "Index", new { sortOrder=ViewBag.UnitPriceSortParm, currentFilter1 = ViewBag.currentFilter1, currentProductCategory = ViewBag.currentProductCategory })
         </th>
         @*<th>
             UnitPrice)
@@ -113,4 +136,4 @@
 
 <br/>
 Page@(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1})) 
+@Html.PagedListPager(Model, page => Url.Action("index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1, currentProductCategory = ViewBag.currentProductCategory})) 
