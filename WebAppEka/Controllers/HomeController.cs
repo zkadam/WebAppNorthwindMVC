@@ -9,13 +9,16 @@ namespace WebAppEka.Controllers
 {
     public class HomeController : Controller
     {
-   
-        public ActionResult Login()
+   //----------------------------------actionName ja controllerNamein pitää tulla edellisessä controllerista
+        public ActionResult Login(string actionName, string controllerName)
         {
+            
             return View();
         }
         [HttpPost]
-        public ActionResult Authorize(Logins LoginModel)
+
+
+        public ActionResult Authorize(Logins LoginModel, string actionName, string controllerName)
         {
             northwindEntities db = new northwindEntities();
             //Haetaan käyttäjän/Loginin tiedot annetuilla tunnustiedoilla tietokannasta LINQ -kyselyllä
@@ -25,7 +28,7 @@ namespace WebAppEka.Controllers
                 ViewBag.LoginMessage = "Successfull login";
                 ViewBag.LoggedStatus = "In";
                 Session["UserName"] = LoggedUser.UserName;
-                return RedirectToAction("Index", "Home"); //Tässä määritellään mihin onnistunut kirjautuminen johtaa --> Home/Index
+                return RedirectToAction(actionName, controllerName); //Tässä määritellään mihin onnistunut kirjautuminen johtaa --> Home/Index
             }
             else
             {

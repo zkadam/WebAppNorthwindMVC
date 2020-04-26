@@ -32,9 +32,9 @@
     <td> @Html.DisplayFor(model => item.Region.RegionDescription) </td>
     <td>
         @Html.ActionLink("Edit", "Edit", new { id = item.ShipperID }) |
-        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+       
         @Html.ActionLink("Delete", "Delete", new { id = item.ShipperID })
-        
+        <a class="btn-outline-primary"href="~/Shippers/Edit/@item.ShipperID"><img class="linkIMG"src="~/Icons/x-circle.svg" /></a>
     </td>
 </tr>
 }
