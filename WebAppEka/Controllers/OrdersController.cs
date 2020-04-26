@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebAppEka.Models;
+using PagedList;
 
 namespace WebAppEka.Controllers
 {
@@ -15,12 +16,77 @@ namespace WebAppEka.Controllers
         private northwindEntities db = new northwindEntities();
 
         // GET: Orders
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter1, string OrderShipper, string currentOrderShipper, int? page, int? pagesize)
         {
-            var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
-            return View(orders.ToList());
+            //  var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
+            northwindEntities db = new northwindEntities();
+            var orders = from o in db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers).OrderBy(o =>o.OrderDate)
+                         select o;
+
+            //tuottekategoriahakufiltterin laitto muistiin
+
+            if ((OrderShipper != null) && (OrderShipper != "0"))
+            {
+                page = 1;
+            }
+            else
+            {
+                OrderShipper = currentOrderShipper;
+            }
+            ViewBag.currentOrderShipper = OrderShipper;
+
+// filtering ONLY by shipper companies
+                if (!String.IsNullOrEmpty(OrderShipper) && (OrderShipper != "0"))
+                {
+                    int para = int.Parse(OrderShipper);
+                    orders = orders.Where(o => o.ShipVia == para);
+                }
+
+
+
+
+
+
+
+
+            //creating list for Categories dropdown
+            List<Shippers> lstShippers = new List<Shippers>();
+//bringing shippers to apumuuttuja
+            var shippersList = from ship in db.Shippers
+                               select ship;
+           Shippers tyhjaShipper = new Shippers();    //creating an empty category which is needed, if no category has been selected
+            tyhjaShipper.ShipperID = 0;
+            tyhjaShipper.CompanyName = "";
+            lstShippers.Add(tyhjaShipper);
+
+            //bringing the shippers to the list
+            foreach (Shippers shipper in shippersList)
+            {
+                Shippers yksiShipper = new Shippers();
+                yksiShipper.ShipperID = shipper.ShipperID;
+                yksiShipper.CompanyName = shipper.CompanyName;
+                lstShippers.Add(yksiShipper);
+            }
+            ViewBag.ShipperId = new SelectList(lstShippers, "ShipperID", "CompanyName", OrderShipper); //lopuks luodaan SelectLitin ja sijoitetaan sen Viewbagiin
+
+
+
+
+            //the paged nutget extention needs a pagenumber int and a pagesize int which we send from view but if it would be null, we change it here because you cant have 0th page
+            int pageSize = (pagesize ?? 10);
+            int pageNumber = (page ?? 1);
+            return View(orders.ToPagedList(pageNumber, pageSize));
+            //return View(orders);
         }
 
+       
+        
+        
+        
+        
+        
+        
+        
         // GET: Orders/Details/5
         public ActionResult Details(int? id)
         {
