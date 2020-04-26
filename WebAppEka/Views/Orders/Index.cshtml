@@ -29,7 +29,7 @@
 {
     <div class="input-group">
         <p class="px-1">@Html.Label("Find by name:")</p>
-        <p class="px-1">@Html.TextBox("SearchString1", ViewBag.currentFilter1 as string, new { @class = "form-control" })</p>
+        @*<p class="px-1">@Html.TextBox("SearchString1", ViewBag.currentFilter1 as string, new { @class = "form-control" })</p>*@
         <p class="px-1">@Html.Label("Choose shipper:")</p>
         <p class="px-1">@Html.TextBox("OrderShipper", ViewBag.currentFilter1 as string, new { @id = "OrderShipper", @class = "form-control" })</p>
         <p class="px-1">@Html.DropDownList("ShipperID", null, htmlAttributes: new { @id = "singleSelectShipperID", @class = "form-control" })</p>
@@ -116,4 +116,4 @@
 
 <br />
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1, currentOrderShipper = ViewBag.currentOrderShipper }))
+@Html.PagedListPager(Model, page => Url.Action("index", new { page, sortOrder = ViewBag.CurrentSort, @*currentFilter1 = ViewBag.currentFilter1,*@ currentOrderShipper = ViewBag.currentOrderShipper }))
