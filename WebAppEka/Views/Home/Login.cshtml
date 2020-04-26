@@ -11,40 +11,51 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Logins</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.LoginId)
+<div class="form-horizontal">
+    <h4>Logins</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.LoginId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PassWord, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PassWord, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PassWord, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-      
-        <label class="text-danger">
-            @Html.DisplayFor(model => model.LoginErrorMessage)
-        </label>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Log" class="btn btn-success" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PassWord, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PassWord, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PassWord, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*tänne lisätty kaksi hiden form element mikä lehettää controller ja action namein eteenpäin että loginista pääsisi
+    aluks haluttuu sivuun johon ei päästiin logiinin takia*@
+    <div class="form-group">
+        
+        <div class="col-md-10">
+         
+            <p style="display:none" class="px-1">@Html.TextBox("controllerName", ViewBag.controllerName as string, new { @class = "form-control" })</p>
+            <p style="display:none" class="px-1">@Html.TextBox("actionName", ViewBag.actionName as string, new { @class = "form-control" })</p>
+
+        </div>
+    </div>
+    
+
+    <label class="text-danger">
+        @Html.DisplayFor(model => model.LoginErrorMessage)
+    </label>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Log" class="btn btn-success" />
+        </div>
+    </div>
+</div>
 }
 
 
