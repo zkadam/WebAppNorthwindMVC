@@ -20,13 +20,22 @@ namespace WebAppEka.Controllers
 
         public ActionResult Authorize(Logins LoginModel, string actionName, string controllerName)
         {
+
+            //setting action and controller names to index/Home if they arrive empty
+            if (String.IsNullOrEmpty(actionName) && String.IsNullOrEmpty(controllerName))
+            {
+                actionName = "Index";
+                controllerName = "Home";
+            }
+            
             northwindEntities db = new northwindEntities();
             //Haetaan käyttäjän/Loginin tiedot annetuilla tunnustiedoilla tietokannasta LINQ -kyselyllä
             var LoggedUser = db.Logins.SingleOrDefault(x => x.UserName == LoginModel.UserName && x.PassWord == LoginModel.PassWord);
             if (LoggedUser != null)
-            {
+            {   
                 ViewBag.LoginMessage = "Successfull login";
                 ViewBag.LoggedStatus = "In";
+                ViewBag.LoginError = 0; //ei ole virhettä, tätä tarvitaan sen takia että viewissä jquery päättää kannattako login ikkunan avata uudestaan
                 Session["UserName"] = LoggedUser.UserName;
                 return RedirectToAction(actionName, controllerName); //Tässä määritellään mihin onnistunut kirjautuminen johtaa --> Home/Index
             }
@@ -34,8 +43,9 @@ namespace WebAppEka.Controllers
             {
                 ViewBag.LoginMessage = "Login unsuccessfull";
                 ViewBag.LoggedStatus = "Out";
+                ViewBag.LoginError = 1;//on jotain virhettä kirjautumisessa, tätä tarvitaan sen takia että viewissä jquery päättää kannattako login ikkunan avata uudestaan
                 LoginModel.LoginErrorMessage = "Tuntematon käyttäjätunnus tai salasana.";
-                return View("Login", LoginModel);
+                return View(actionName, LoginModel);
             }
         }
         public ActionResult LogOut()
@@ -46,6 +56,8 @@ namespace WebAppEka.Controllers
         }
         public ActionResult Index()
         {
+            ViewBag.LoginError = 0; //ei ole virhettä, tätä tarvitaan sen takia että viewissä jquery päättää kannattako login ikkunan avata uudestaan
+
             return View();
         }
 
