@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebAppEka.ViewModels.ProdsUpp>
+
+@{
+    ViewBag.Title = "ProductsAndSuppliers";
+}
+
+<h2>ProductsAndSuppliers</h2>
+
+<p>
+    @Html.ActionLink("Back to products list", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Address)</th>
+        <th>@Html.DisplayNameFor(model => model.CategoryID)</th>
+        <th>@Html.DisplayNameFor(model => model.City)</th>
+        <th>@Html.DisplayNameFor(model => model.CompanyName)</th>
+        <th>@Html.DisplayNameFor(model => model.ContactName)</th>
+        <th>@Html.DisplayNameFor(model => model.ContactTitle)</th>
+        <th>@Html.DisplayNameFor(model => model.Country)</th>
+        <th>@Html.DisplayNameFor(model => model.Discontinued)</th>
+        <th>@Html.DisplayNameFor(model => model.Fax)</th>
+        <th>@Html.DisplayNameFor(model => model.HomePage)</th>
+        <th>@Html.DisplayNameFor(model => model.ImageLink)</th>
+        <th>@Html.DisplayNameFor(model => model.Phone)</th>
+        <th>@Html.DisplayNameFor(model => model.PostalCode)</th>
+        <th>@Html.DisplayNameFor(model => model.ProductID)</th>
+        <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+        <th>@Html.DisplayNameFor(model => model.QuantityPerUnit)</th>
+        <th>@Html.DisplayNameFor(model => model.Region)</th>
+        <th>@Html.DisplayNameFor(model => model.ReorderLevel)</th>
+        <th>@Html.DisplayNameFor(model => model.SupplierID)</th>
+        <th>@Html.DisplayNameFor(model => model.UnitPrice)</th>
+        <th>@Html.DisplayNameFor(model => model.UnitsInStock)</th>
+        <th>@Html.DisplayNameFor(model => model.UnitsOnOrder)</th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+    <td>@Html.DisplayFor(modelItem => item.CategoryID)</td>
+    <td>@Html.DisplayFor(modelItem => item.City)</td>
+    <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+    <td>@Html.DisplayFor(modelItem => item.ContactName)</td>
+    <td>@Html.DisplayFor(modelItem => item.ContactTitle)</td>
+    <td>@Html.DisplayFor(modelItem => item.Country)</td>
+    <td>@Html.DisplayFor(modelItem => item.Discontinued)</td>
+    <td>@Html.DisplayFor(modelItem => item.Fax)</td>
+    <td>@Html.DisplayFor(modelItem => item.HomePage)</td>
+    <td>@Html.DisplayFor(modelItem => item.ImageLink)</td>
+    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+    <td>@Html.DisplayFor(modelItem => item.PostalCode)</td>
+    <td>@Html.DisplayFor(modelItem => item.ProductID)</td>
+    <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+    <td>@Html.DisplayFor(modelItem => item.QuantityPerUnit)</td>
+    <td>@Html.DisplayFor(modelItem => item.Region)</td>
+    <td>@Html.DisplayFor(modelItem => item.ReorderLevel)</td>
+    <td>@Html.DisplayFor(modelItem => item.SupplierID)</td>
+    <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+    <td>@Html.DisplayFor(modelItem => item.UnitsInStock)</td>
+    <td>@Html.DisplayFor(modelItem => item.UnitsOnOrder)</td>
+
+    @*<td>
+        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+    </td>*@
+</tr>
+}
+
+</table>

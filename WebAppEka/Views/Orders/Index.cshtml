@@ -24,6 +24,7 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Tilausten yhteenveto", "Ordersummary")
 </p>
 @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
 {
@@ -31,7 +32,7 @@
         <p class="px-1">@Html.Label("Find by name:")</p>
         @*<p class="px-1">@Html.TextBox("SearchString1", ViewBag.currentFilter1 as string, new { @class = "form-control" })</p>*@
         <p class="px-1">@Html.Label("Choose shipper:")</p>
-        <p class="px-1">@Html.TextBox("OrderShipper", ViewBag.currentFilter1 as string, new { @id = "OrderShipper", @class = "form-control" })</p>
+        <p class="px-1" style="visibility:hidden">@Html.TextBox("OrderShipper", ViewBag.currentFilter1 as string, new { @id = "OrderShipper", @class = "form-control" })</p>
         <p class="px-1">@Html.DropDownList("ShipperID", null, htmlAttributes: new { @id = "singleSelectShipperID", @class = "form-control" })</p>
 
 
