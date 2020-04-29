@@ -955,6 +955,7 @@
     <Content Include="Views\Prodsupp\Details.cshtml" />
     <Content Include="Views\Prodsupp\Edit.cshtml" />
     <Content Include="Views\Prodsupp\Index.cshtml" />
+    <Content Include="Views\Prodsupp\ProductsAndSuppliers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
