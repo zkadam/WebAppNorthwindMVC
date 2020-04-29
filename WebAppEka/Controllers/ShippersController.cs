@@ -6,6 +6,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebAppEka.Models;
+using WebAppEka.ViewModels;
 
 
 namespace WebAppEka.Controllers
@@ -111,6 +112,33 @@ namespace WebAppEka.Controllers
                 return RedirectToAction("Index");
            
            
+        }
+        public ActionResult ShippersWithRegion()
+        {
+
+            var shippingRegion = from s in db.Shippers
+                                   join r in db.Region on s.RegionID equals r.RegionID
+
+
+                                   //create view for this action remember viewmodels
+                                   //add link to it from index
+                                   //debug
+
+
+
+                                   select new ShipperRegion
+                                   {
+
+                                       CompanyName = (string)s.CompanyName,
+                                       Phone = (string)s.Phone,
+                                       RegionDescription = (string)r.RegionDescription,
+                                       RegionID = (int)r.RegionID,
+                                       ShipperID = (int)s.ShipperID,
+
+
+                                   };
+            return View(shippingRegion);
+
         }
 
     }
