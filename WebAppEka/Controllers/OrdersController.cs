@@ -244,14 +244,63 @@ namespace WebAppEka.Controllers
 
             return View(orderSummary);
         }
-        public ActionResult TilausOtsikot()
+        public ActionResult TilausOtsikot(string searchAsiakas, string searchKaupunki, string searchRahtari, int? page, int? pagesize)
         {
-            var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
-            return View(orders.ToList());
+            //ViewBag.CurrentSort = sortOrder;
+
+            //tää seuraava kaks vaihe vaihtaa viewbagia eli vain sitä että onko seuraavalla klikkaamaalla ascending tai descending
+         //   ViewBag.ProductNameSortParm = String.IsNullOrEmpty(sortOrder) ? "productname_desc" : "";
+          //  ViewBag.UnitPriceSortParm = sortOrder == "UnitPrice" ? "UnitPrice_desc" : "UnitPrice";
+
+            // jos laitettiin joku searchiin, mene 1.sivuun
+
+            //hakufiltterin muistiin
+            if ((searchAsiakas != null)&& (searchKaupunki != null) && (searchRahtari != null))
+            {
+                page = 1;
+            }
+            //muuten annetaan searchstringille filterin arvo - koska filter jää muistossa - sitä aina lehetätään viewin kautta(alhalla oleva acition url)
+            //else
+            //{
+            //    searchString1 = currentFilter1;
+            //}
+            //ViewBag.currentFilter1 = searchString1;
+
+            //tuottekategoriahakufiltterin laitto muistiin
+
+            //if ((ProductCategory != null) && (ProductCategory != "0"))
+            //{
+            //    page = 1;
+            //}
+            //else
+            //{
+            //    ProductCategory = currentProductCategory;
+            //}
+            //ViewBag.currentProductCategory = ProductCategory;
+            //----------------------------------------------------------------------------------------------------------------------------------------------------------------//
+            var orders = from ord in db.Orders.Include(ord => ord.Customers).Include(ord => ord.Employees).Include(ord => ord.Shippers)
+                         orderby ord.OrderDate
+                         select ord;
+
+
+
+
+
+
+
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+            int pageSize = (pagesize ?? 10);
+            int pageNumber = (page ?? 1);
+            return View(orders.ToPagedList(pageNumber, pageSize));
         }    // GET: tilausotsikot masterView tehtävän varten AZ
 
         public ActionResult _TilausRivit(int? orderid)
         {
+
+
+
+
             var orderRowsList = from od in db.Order_Details
                                join p in db.Products on od.ProductID equals p.ProductID
                                join c in db.Categories on p.CategoryID equals c.CategoryID
@@ -264,7 +313,7 @@ namespace WebAppEka.Controllers
                               {
 
                                   OrderID = (int)od.OrderID,
-                                                                   ProductID = (int)p.ProductID,
+                                  ProductID = (int)p.ProductID,
                                   UnitPrice = (float)p.UnitPrice,
                                   Quantity = (int)od.Quantity,
                                   Discount = (float)od.Discount,

@@ -1,4 +1,6 @@
-﻿@model IEnumerable<WebAppEka.Models.Orders>
+﻿@model PagedList.IPagedList<WebAppEka.Models.Orders>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "TilausOtsikot";
@@ -6,14 +8,14 @@
 @section scripts{
     <script type="text/javascript">
         $(function () {
-            $(".showOrderClass").click(function() {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
+            $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
                 let orderId = $(this).data("orderid");
                 //alert("Klikkasit tilausnumeroa: " + orderId);
                 var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
                 $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
                 var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
                 console.log(url);
-                console.log($detailDiv);                                    
+                console.log($detailDiv);
                 $.get(url, function (data) {                                /*kutsutaan kontrollerin */
                     $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
                 });
@@ -37,7 +39,7 @@
 @*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
 
 <div class="container-fluid">
-    <div class="card-header container-fluid" >
+    <div class="card-header container-fluid">
         <a class="card-link">
             <form>
                 <div class="input-group" style="position:sticky">
@@ -57,7 +59,7 @@
         </a>
     </div>
 
- @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
+    @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
 
     <div id="accordion">
         @foreach (var item in Model)
@@ -68,24 +70,27 @@
                         <form>
                             <div class="input-group bg-light">
                                 <div class="input-group-prepend'">
-                                    <span class="input-group-text ">@item.OrderID</span>
+                                    <span class="input-group-text ">@Html.DisplayTextFor(modelItem => item.OrderID)</span>
                                 </div>
-                                <input type="text" class="form-control px-2" value="@item.Customers.CompanyName" disabled>
-                                <input type="text" class="form-control px-2" value="@item.ShipName" disabled>
-                                <input type="text" class="form-control px-2" value="@item.ShipAddress" disabled>
-                                <input type="text" class="form-control px-2" value="@item.ShipCity" disabled>
-                                <input type="text" class="form-control px-2" value="@item.ShipCountry" disabled>
-                                <input type="text" class="form-control px-2" value="@item.ShipRegion" disabled>
-                                <input type="text" class="form-control px-2" value="@item.Shippers.CompanyName" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Customers.CompanyName)" disabled>
+
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipName)" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipAddress)" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCity)" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCountry)" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipRegion)" disabled>
+                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Shippers.CompanyName)" disabled>
+
+
 
                             </div>
                         </form>
                     </a>
                 </div>
                 @*here comes te div which is collapsed ZK*@
-                <div id="collapse_@item.OrderID" class="collapse" data-parent="#accordion">
+                <div id="collapse_@item.OrderID" class="collapse" style="background-color:#cceeff" data-parent="#accordion">
                     <div class="card-body">
-                      
+
                         <div id="orderDetails_@item.OrderID"></div>
                     </div>
                 </div>
@@ -94,4 +99,7 @@
         }
     </div>
 </div>
-    
+
+<br />
+Page@(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("TilausOtsikot", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1, currentProductCategory = ViewBag.currentProductCategory })) 
