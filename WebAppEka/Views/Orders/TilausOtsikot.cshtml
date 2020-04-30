@@ -1,0 +1,89 @@
+﻿@model IEnumerable<WebAppEka.Models.Orders>
+
+@{
+    ViewBag.Title = "TilausOtsikot";
+}
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $(".showOrderClass").click(function() {
+                let orderId = $(this).data("orderid");
+                //alert("Klikkasit tilausnumeroa: " + orderId);
+
+            });
+        });
+    </script>
+}
+
+
+
+<h2>TilausOtsikot</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+
+
+@*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
+
+<div class="container-fluid">
+    <div class="card-header">
+        <a class="card-link">
+            <form>
+                <div class="input-group">
+                    <div class="input-group-prepend'">
+                        <span class="input-group-text bg-warning font-weight-bold" font-weight-bold>Order</span>
+                    </div>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipName" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipAddress" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCity" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCountry" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipRegion" disabled>
+                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="Shippers.CompanyName" disabled>
+
+                </div>
+            </form>
+        </a>
+    </div>
+
+ @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
+
+    <div id="accordion">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link showOrderClass" data-orderid="@item.OrderID" data-toggle="collapse" href="#collapse_@item.OrderID">
+                        <form>
+                            <div class="input-group">
+                                <div class="input-group-prepend'">
+                                    <span class="input-group-text">@item.OrderID</span>
+                                </div>
+                                <input type="text" class="form-control px-2" value="@item.Customers.CompanyName" disabled>
+                                <input type="text" class="form-control px-2" value="@item.ShipName" disabled>
+                                <input type="text" class="form-control px-2" value="@item.ShipAddress" disabled>
+                                <input type="text" class="form-control px-2" value="@item.ShipCity" disabled>
+                                <input type="text" class="form-control px-2" value="@item.ShipCountry" disabled>
+                                <input type="text" class="form-control px-2" value="@item.ShipRegion" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Shippers.CompanyName" disabled>
+
+                            </div>
+                        </form>
+                    </a>
+                </div>
+                @*here comes te div which is collapsed ZK*@
+                <div id="collapse_@item.OrderID" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <p> testi näkyykö</p>
+                        @*<div id="OrderDetails_@item.OrderID"></div>*@
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+    

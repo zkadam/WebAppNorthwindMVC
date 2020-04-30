@@ -1,5 +1,4 @@
-﻿@*loginin tarvittava model*@
-@model WebAppEka.Models.Logins
+﻿
 
 @{
     ViewBag.Title = "Home Page";
@@ -28,85 +27,6 @@
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Mallibutton &raquo;</a></p>
 </div>
 
-<!-- Button to Open the Modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LoginRuutu">
-    Open modal
-</button>
-
-<!-- The Modal -->
-<div class="modal" id="LoginRuutu">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!--- ------------------------------------------------------------------Modal body----------------------------------------------------------------------- -->
-            <div class="modal-body">
-                @using (Html.BeginForm("Authorize", "Home", FormMethod.Post, new { id = "loginForm" }))
-                {
-                    @Html.AntiForgeryToken()
-
-                    <div class="form-horizontal">
-                        <h4>Logins</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.LoginId)
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.PassWord, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.PassWord, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PassWord, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        @*tänne lisätty kaksi hiden form element mikä lehettää controller ja action namein eteenpäin että loginista pääsisi
-                            aluks haluttuu sivuun johon ei päästiin logiinin takia*@
-                        <div class="form-group">
-
-                            <div class="col-md-10">
-
-                                <p style="display:none" class="px-1">@Html.TextBox("controllerName", @ViewContext.RouteData.Values["controller"].ToString() as string, new { @class = "form-control" })</p>
-                                <p style="display:none" class="px-1">@Html.TextBox("actionName", @ViewContext.RouteData.Values["action"].ToString() as string, new { @class = "form-control" })</p>
-
-                            </div>
-                        </div>
-                        <label class="text-danger">
-                            @Html.DisplayFor(model => model.LoginErrorMessage)
-                        </label>
-
-                    </div>}
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success" form="loginForm"><img class="linkIMG" style="color:#2196F3" src="~/Icons/box-arrow-in-left.svg" /></button>
-@*here there is a checking that the action is not authorize, coz then the controller would return it to there, instead of following action and controller parameters*@
-                @if (!(@ViewContext.RouteData.Values["action"].ToString() == "Authorize"))
-                {
-                    <a href="@Url.Action(@ViewContext.RouteData.Values["action"].ToString(),@ViewContext.RouteData.Values["controller"].ToString())" class="btn btn-danger"><img class="linkIMG" style="fill:#2196F3" src="~/Icons/x-circle.svg" /></a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Index","Home")" class="btn btn-danger"><img class="linkIMG" style="color:#2196F3" src="~/Icons/x-circle.svg" /></a>
-                }
-
-
-                @*<button type="button" class="btn btn-danger" data-dismiss="modal">close modal old</button>*@
-            </div>
-
-        </div>
-    </div>
-</div>
-
+@{
+    Html.RenderPartial("_LoginModal");
+}

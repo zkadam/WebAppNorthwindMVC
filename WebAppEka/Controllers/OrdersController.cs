@@ -244,6 +244,11 @@ namespace WebAppEka.Controllers
 
             return View(orderSummary);
         }
+        public ActionResult TilausOtsikot()
+        {
+            var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
+            return View(orders.ToList());
+        }    // GET: tilausotsikot masterView tehtävän varten AZ
         protected override void Dispose(bool disposing)
         {
             if (disposing)

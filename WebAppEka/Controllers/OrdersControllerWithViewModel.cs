@@ -180,7 +180,12 @@ namespace WebAppEka.Controllers
             return View(orderSummary);
         }
 
-
+        // GET: tilausotsikot masterView tehtävän varten AZ
+        public ActionResult TilausOtsikot()
+        {
+            var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
+            return View(orders.ToList());
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
