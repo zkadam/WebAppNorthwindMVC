@@ -6,9 +6,17 @@
 @section scripts{
     <script type="text/javascript">
         $(function () {
-            $(".showOrderClass").click(function() {
+            $(".showOrderClass").click(function() {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
                 let orderId = $(this).data("orderid");
                 //alert("Klikkasit tilausnumeroa: " + orderId);
+                var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
+                $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
+                var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
+                console.log(url);
+                console.log($detailDiv);                                    
+                $.get(url, function (data) {                                /*kutsutaan kontrollerin */
+                    $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
+                });
 
             });
         });
@@ -29,10 +37,10 @@
 @*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
 
 <div class="container-fluid">
-    <div class="card-header">
+    <div class="card-header container-fluid" >
         <a class="card-link">
             <form>
-                <div class="input-group">
+                <div class="input-group" style="position:sticky">
                     <div class="input-group-prepend'">
                         <span class="input-group-text bg-warning font-weight-bold" font-weight-bold>Order</span>
                     </div>
@@ -58,9 +66,9 @@
                 <div class="card-header">
                     <a class="card-link showOrderClass" data-orderid="@item.OrderID" data-toggle="collapse" href="#collapse_@item.OrderID">
                         <form>
-                            <div class="input-group">
+                            <div class="input-group bg-light">
                                 <div class="input-group-prepend'">
-                                    <span class="input-group-text">@item.OrderID</span>
+                                    <span class="input-group-text ">@item.OrderID</span>
                                 </div>
                                 <input type="text" class="form-control px-2" value="@item.Customers.CompanyName" disabled>
                                 <input type="text" class="form-control px-2" value="@item.ShipName" disabled>
@@ -77,8 +85,8 @@
                 @*here comes te div which is collapsed ZK*@
                 <div id="collapse_@item.OrderID" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        <p> testi näkyykö</p>
-                        @*<div id="OrderDetails_@item.OrderID"></div>*@
+                      
+                        <div id="orderDetails_@item.OrderID"></div>
                     </div>
                 </div>
 

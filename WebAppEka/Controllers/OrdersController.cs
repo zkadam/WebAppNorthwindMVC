@@ -249,6 +249,44 @@ namespace WebAppEka.Controllers
             var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
             return View(orders.ToList());
         }    // GET: tilausotsikot masterView tehtävän varten AZ
+
+        public ActionResult _TilausRivit(int? orderid)
+        {
+            var orderRowsList = from od in db.Order_Details
+                               join p in db.Products on od.ProductID equals p.ProductID
+                               join c in db.Categories on p.CategoryID equals c.CategoryID
+                               where od.OrderID== orderid
+                               //orderby lause
+
+
+
+                               select new OrderRows
+                              {
+
+                                  OrderID = (int)od.OrderID,
+                                                                   ProductID = (int)p.ProductID,
+                                  UnitPrice = (float)p.UnitPrice,
+                                  Quantity = (int)od.Quantity,
+                                  Discount = (float)od.Discount,
+                                  ProductName = (string)p.ProductName,
+                                  SupplierID = (int)p.SupplierID,
+                                  CategoryID = (int)c.CategoryID,
+                                  QuantityPerUnit = (string)p.QuantityPerUnit,
+                                  UnitsInStock = (int)p.UnitsInStock,
+                                  UnitsOnOrder = (int)p.UnitsOnOrder,
+                                  ReorderLevel = (int)p.ReorderLevel,
+                                  Discontinued = (bool)p.Discontinued,
+                                  ImageLink = (string)p.ImageLink,
+                                  CategoryName = (string)c.CategoryName,
+                                  Description = (string)c.Description,
+                                  // Picture = (Image)p.Picture,
+                              };
+
+            return PartialView(orderRowsList);
+
+
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
