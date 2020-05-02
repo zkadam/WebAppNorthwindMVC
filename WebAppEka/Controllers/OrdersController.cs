@@ -194,7 +194,7 @@ namespace WebAppEka.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        //----------------------------viewmodels ordersummary--------------------------------------//
+        //--------------------------------------------------------------------------------------------------viewmodels ordersummary--------------------------------------------------------------------------------------//
 
         public ActionResult Ordersummary()
         {
@@ -244,14 +244,12 @@ namespace WebAppEka.Controllers
 
             return View(orderSummary);
         }
-        public ActionResult TilausOtsikot(string searchAsiakas, string searchKaupunki, string searchRahtari, int? page, int? pagesize)
+
+        //--------------------------------------------------------------------------------------------------order headers--------------------------------------------------------------------------------------//
+
+        public ActionResult TilausOtsikot(string searchAsiakas, string searchKaupunki, string searchRahtari, string currentTextfield, int? page, int? pagesize)
         {
-            //ViewBag.CurrentSort = sortOrder;
-
-            //tää seuraava kaks vaihe vaihtaa viewbagia eli vain sitä että onko seuraavalla klikkaamaalla ascending tai descending
-         //   ViewBag.ProductNameSortParm = String.IsNullOrEmpty(sortOrder) ? "productname_desc" : "";
-          //  ViewBag.UnitPriceSortParm = sortOrder == "UnitPrice" ? "UnitPrice_desc" : "UnitPrice";
-
+       
             // jos laitettiin joku searchiin, mene 1.sivuun
 
             //hakufiltterin muistiin
@@ -259,36 +257,27 @@ namespace WebAppEka.Controllers
             {
                 page = 1;
             }
-            //muuten annetaan searchstringille filterin arvo - koska filter jää muistossa - sitä aina lehetätään viewin kautta(alhalla oleva acition url)
-            //else
-            //{
-            //    searchString1 = currentFilter1;
-            //}
-            //ViewBag.currentFilter1 = searchString1;
-
-            //tuottekategoriahakufiltterin laitto muistiin
-
-            //if ((ProductCategory != null) && (ProductCategory != "0"))
-            //{
-            //    page = 1;
-            //}
-            //else
-            //{
-            //    ProductCategory = currentProductCategory;
-            //}
-            //ViewBag.currentProductCategory = ProductCategory;
+        //if arvo is null, we change it to blank
             searchAsiakas = (searchAsiakas ?? "");
             searchKaupunki = (searchKaupunki ?? "");
             searchRahtari = (searchRahtari ?? "");
+           //we set the focus of textbox for the last entery or to asiakas
+            currentTextfield = (currentTextfield ?? "searchAsiakas");
+
 
             ViewBag.currentAsiakas = searchAsiakas;
             ViewBag.currentKaupunki = searchKaupunki;
             ViewBag.currentRahtari = searchRahtari;
+
+
+//sending browser where was the last search input
+            ViewBag.currentTextfield = currentTextfield;
+
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------//
             var orders = from ord in db.Orders.Include(ord => ord.Customers).Include(ord => ord.Employees).Include(ord => ord.Shippers)
-                         orderby ord.OrderDate
-                         //where ord.Customers.CompanyName.Contains(searchAsiakas)
+                         
                          where (ord.Customers.CompanyName.Contains(searchAsiakas) && ord.Customers.City.Contains(searchKaupunki) && ord.Shippers.CompanyName.Contains(searchRahtari))
+                         orderby ord.OrderDate
                          select ord;
 
 

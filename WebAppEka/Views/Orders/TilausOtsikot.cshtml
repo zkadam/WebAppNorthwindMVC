@@ -2,28 +2,87 @@
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
+
+
+
+
+
+
+
+@section scripts{
+
+
+
+    <script type="text/javascript">
+
+
+
+    </script>
+    @*--------------------------------------------------------------script for autosubmiting on textfield changes using textbox class and html.begingform id------------------------------------------------*@
+    @*<script type="text/javascript">
+        $('#searchKaupunki').value.change(function () {
+            alert("changed");
+        });*@
+    @*</script>*@
+
+
+
+        <script type="text/javascript">
+
+            $(".formTBoxes").on("change paste keyup", function () {
+
+               
+
+              
+                    //alert($(event.target)[0].id);
+              
+                //var selValue = $("#singleSelectCategoryID").val();
+                //console.log(selValue);
+                //document.getElementById("ProductCategory").value = selValue;
+                console.log('$(event.target)[0].id');
+                //var idSender = "$(event.target)[0].id";
+                //document.getElementById("#currentTextfield").value = idSender;
+
+               
+                //passing the id as the value of the active searchbox
+                document.getElementById("lastTextEnter").value = $(event.target)[0].id;
+               
+
+                $("#autosubmitChange").submit();
+            });
+
+
+
+    </script>
+
+
+
+    @*--------------------------------------------------------------script for collapse tilausrivit------------------------------------------------*@
+    <script type="text/javascript">
+
+                $(function () {
+                    $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
+                        let orderId = $(this).data("orderid");
+                        //alert("Klikkasit tilausnumeroa: " + orderId);
+                        var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
+                        $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
+                        var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
+                        console.log(url);
+                        console.log($detailDiv);
+                        $.get(url, function (data) {                                /*kutsutaan kontrollerin */
+                            $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
+                        });
+
+                    });
+                });
+    </script>
+}
 @{
     ViewBag.Title = "TilausOtsikot";
 }
-@section scripts{
-    <script type="text/javascript">
-        $(function () {
-            $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
-                let orderId = $(this).data("orderid");
-                //alert("Klikkasit tilausnumeroa: " + orderId);
-                var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
-                $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
-                var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
-                console.log(url);
-                console.log($detailDiv);
-                $.get(url, function (data) {                                /*kutsutaan kontrollerin */
-                    $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
-                });
 
-            });
-        });
-    </script>
-}
+
+
 
 
 
@@ -39,56 +98,99 @@
 @*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
 
 <div class="container-fluid">
-    
-    <div class="card-header container-fluid">
+
+    <div class="card-header container-fluid bg-warning">
 
         <a class="card-link">
-            <form>
-                <div class="input-group" style="position:sticky">
-                    <div class="input-group-prepend'">
-                        <span class="input-group-text bg-warning font-weight-bold" font-weight-bold>Order</span>
+
+            @using (Html.BeginForm("TilausOtsikot", "Orders", FormMethod.Get, new { @id = "autosubmitChange" }))
+            {
+
+                @Html.Hidden("currentTextfield", ViewBag.currentTextfield as string, new { @class = "form-control formTBoxes hidden", @id = "lastTextEnter" })
+
+                <div class="input-group" style="position:sticky" id="FilterForm">
+                    <div class="bg-warning font-weight-bold" style="max-width:unset; padding-right:33px">
+                        <text>Order<br></text><text class="font-weight-lighter">Sort:</text>
+
                     </div>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>
-                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipName" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipAddress" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCity" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCountry" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipRegion" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="Shippers.CompanyName" disabled>
+                    @*<input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>*@
+                    @{ int i = 13;}
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        @*---------------------------------------------------------------------------------for each textfield we check if it is the one where we typedlast, and if it is , we set focus there ----------------------------------------------------*@
+                        <text>Customer<br></text>
+                           @if (ViewBag.currentTextfield=="searchAsiakas")
+                               {
+                                @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas", autofocus = "autofocus" })
+                               }
+                               else
+                               {
+                                @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas" })
+
+                               }
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>ShipName<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Address<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        <text>Ship city<br></text>
+                        @if (ViewBag.currentTextfield == "searchKaupunki")
+                        {
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus" })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki" })
+                                                    }
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Country<br></text>
+
+                    </div>
+
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Region<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        <text>Shipper name<br></text>
+                        @if (ViewBag.currentTextfield == "searchRahtari")
+                        {
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", se })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
+                        }
+                    </div>
+                    <p class="px-2"><input id="autoSubmitBtn" type="submit" value="Search" class="form-control" /></p>
 
                 </div>
-            </form>
-        </a>
-    </div>
-    @*-----------------------------------------------------------------------------------------------------------------*@
 
-    @*----------------------------------filter forms ----------------------------------- ZK*@
+            }
+
+
+    </div>
+
+
+</div>
+@*-----------------------------------------------------------------------------------------------------------------*@
+
+@*----------------------------------filter forms ----------------------------------- ZK*@
 
 <div id="accordion">
 
 
-    @using (Html.BeginForm("TilausOtsikot", "Orders", FormMethod.Get))
-    {
-        <div class="input-group">
-
-
-
-            <div class="px-2">@Html.Label("Filter by:")</div>
-
-            <div class="px-2"><p>Customer</p>@Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control" })</div>
-            <div class="px-1">@Html.Label("City:")</div>
-            <div class="px-2">@Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control" })</div>
-            <div class="px-2">@Html.Label("Shipper:")</div>
-            <div class="px-2">@Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control" })</div>
-            @*<p class="px-1">@Html.DropDownList("CategoryID", null, htmlAttributes: new { @id = "singleSelectCategoryID", @class = "form-control" })</p>*@
-
-
-
-            <p class="px-2"><input type="submit" value="Search" class="form-control" /></p>
-
-        </div>
-
-    }
     @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
 
     @foreach (var item in Model)
