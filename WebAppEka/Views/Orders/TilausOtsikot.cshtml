@@ -114,7 +114,7 @@
 
                     </div>
                     @*<input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>*@
-                    @{ int i = 13;}
+                    @{ int i = 13; }
                     <div class="bg-warning font-weight-bold " style="width:@(i)%">
                         @*---------------------------------------------------------------------------------for each textfield we check if it is the one where we typedlast, and if it is , we set focus there ----------------------------------------------------*@
                         <text>Customer<br></text>
@@ -143,7 +143,7 @@
                         <text>Ship city<br></text>
                         @if (ViewBag.currentTextfield == "searchKaupunki")
                         {
-                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus" })
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus",  })
                         }
                         else
                         {
@@ -166,11 +166,11 @@
                         <text>Shipper name<br></text>
                         @if (ViewBag.currentTextfield == "searchRahtari")
                         {
-                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", se })
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", setSelectionEnd = (string)ViewBag.currentRahtari.length})
                         }
                         else
                         {
-                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
+                        @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
                         }
                     </div>
                     <p class="px-2"><input id="autoSubmitBtn" type="submit" value="Search" class="form-control" /></p>
