@@ -39,7 +39,9 @@
 @*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
 
 <div class="container-fluid">
+    
     <div class="card-header container-fluid">
+
         <a class="card-link">
             <form>
                 <div class="input-group" style="position:sticky">
@@ -47,7 +49,7 @@
                         <span class="input-group-text bg-warning font-weight-bold" font-weight-bold>Order</span>
                     </div>
                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>
-                    <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipName" disabled>
+                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipName" disabled>
                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipAddress" disabled>
                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCity" disabled>
                     <input type="text" class="form-control bg-warning font-weight-bold px-2" value="ShipCountry" disabled>
@@ -58,48 +60,75 @@
             </form>
         </a>
     </div>
+    @*-----------------------------------------------------------------------------------------------------------------*@
 
+    @*----------------------------------filter forms ----------------------------------- ZK*@
+
+<div id="accordion">
+
+
+    @using (Html.BeginForm("TilausOtsikot", "Orders", FormMethod.Get))
+    {
+        <div class="input-group">
+
+
+
+            <div class="px-2">@Html.Label("Filter by:")</div>
+
+            <div class="px-2"><p>Customer</p>@Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control" })</div>
+            <div class="px-1">@Html.Label("City:")</div>
+            <div class="px-2">@Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control" })</div>
+            <div class="px-2">@Html.Label("Shipper:")</div>
+            <div class="px-2">@Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control" })</div>
+            @*<p class="px-1">@Html.DropDownList("CategoryID", null, htmlAttributes: new { @id = "singleSelectCategoryID", @class = "form-control" })</p>*@
+
+
+
+            <p class="px-2"><input type="submit" value="Search" class="form-control" /></p>
+
+        </div>
+
+    }
     @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
 
-    <div id="accordion">
-        @foreach (var item in Model)
-        {
-            <div class="card">
-                <div class="card-header">
-                    <a class="card-link showOrderClass" data-orderid="@item.OrderID" data-toggle="collapse" href="#collapse_@item.OrderID">
-                        <form>
-                            <div class="input-group bg-light">
-                                <div class="input-group-prepend'">
-                                    <span class="input-group-text ">@Html.DisplayTextFor(modelItem => item.OrderID)</span>
-                                </div>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Customers.CompanyName)" disabled>
-
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipName)" disabled>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipAddress)" disabled>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCity)" disabled>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCountry)" disabled>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipRegion)" disabled>
-                                <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Shippers.CompanyName)" disabled>
-
-
-
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                <a class="card-link showOrderClass" data-orderid="@item.OrderID" data-toggle="collapse" href="#collapse_@item.OrderID">
+                    <form>
+                        <div class="input-group bg-light">
+                            <div class="input-group-prepend'">
+                                <span class="input-group-text ">@Html.DisplayTextFor(modelItem => item.OrderID)</span>
                             </div>
-                        </form>
-                    </a>
-                </div>
-                @*here comes te div which is collapsed ZK*@
-                <div id="collapse_@item.OrderID" class="collapse" style="background-color:#cceeff" data-parent="#accordion">
-                    <div class="card-body">
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Customers.CompanyName)" disabled>
 
-                        <div id="orderDetails_@item.OrderID"></div>
-                    </div>
-                </div>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipName)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipAddress)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCity)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCountry)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipRegion)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Shippers.CompanyName)" disabled>
 
+
+
+                        </div>
+                    </form>
+                </a>
             </div>
-        }
-    </div>
+            @*here comes te div which is collapsed ZK*@
+            <div id="collapse_@item.OrderID" class="collapse" style=" background-color:#cceeff" data-parent="#accordion">
+                <div class="card-body">
+
+                    <div id="orderDetails_@item.OrderID"></div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
 </div>
 
 <br />
 Page@(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("TilausOtsikot", new { page, sortOrder = ViewBag.CurrentSort, currentFilter1 = ViewBag.currentFilter1, currentProductCategory = ViewBag.currentProductCategory })) 
+@Html.PagedListPager(Model, page => Url.Action("TilausOtsikot", new { page, sortOrder = ViewBag.currentSort, searchAsiakas = ViewBag.currentAsiakas, searchRahtari = ViewBag.currentRahtari, searchKaupunki = ViewBag.currentKaupunki })) 

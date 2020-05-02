@@ -277,9 +277,18 @@ namespace WebAppEka.Controllers
             //    ProductCategory = currentProductCategory;
             //}
             //ViewBag.currentProductCategory = ProductCategory;
+            searchAsiakas = (searchAsiakas ?? "");
+            searchKaupunki = (searchKaupunki ?? "");
+            searchRahtari = (searchRahtari ?? "");
+
+            ViewBag.currentAsiakas = searchAsiakas;
+            ViewBag.currentKaupunki = searchKaupunki;
+            ViewBag.currentRahtari = searchRahtari;
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------//
             var orders = from ord in db.Orders.Include(ord => ord.Customers).Include(ord => ord.Employees).Include(ord => ord.Shippers)
                          orderby ord.OrderDate
+                         //where ord.Customers.CompanyName.Contains(searchAsiakas)
+                         where (ord.Customers.CompanyName.Contains(searchAsiakas) && ord.Customers.City.Contains(searchKaupunki) && ord.Shippers.CompanyName.Contains(searchRahtari))
                          select ord;
 
 
