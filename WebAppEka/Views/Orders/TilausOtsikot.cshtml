@@ -13,11 +13,6 @@
 
 
 
-    <script type="text/javascript">
-
-
-
-    </script>
     @*--------------------------------------------------------------script for autosubmiting on textfield changes using textbox class and html.begingform id------------------------------------------------*@
     @*<script type="text/javascript">
         $('#searchKaupunki').value.change(function () {
@@ -25,31 +20,18 @@
         });*@
     @*</script>*@
 
+    @*--------------------------------------------------updateing the last text field*@  
 
+    <script type="text/javascript">
 
-        <script type="text/javascript">
+        $(".formTBoxes").on("change paste keyup", function () {
 
-            $(".formTBoxes").on("change paste keyup", function () {
+            //passing the id as the value of the active searchbox
+            document.getElementById("lastTextEnter").value = $(event.target)[0].id;
 
-               
-
-              
-                    //alert($(event.target)[0].id);
-              
-                //var selValue = $("#singleSelectCategoryID").val();
-                //console.log(selValue);
-                //document.getElementById("ProductCategory").value = selValue;
-                console.log('$(event.target)[0].id');
-                //var idSender = "$(event.target)[0].id";
-                //document.getElementById("#currentTextfield").value = idSender;
-
-               
-                //passing the id as the value of the active searchbox
-                document.getElementById("lastTextEnter").value = $(event.target)[0].id;
-               
-
-                $("#autosubmitChange").submit();
-            });
+            //------------------------------------------here is link for autosubmitting the form, but autofocus and index is not working well
+            //$("#autosubmitChange").submit();
+        });
 
 
 
@@ -60,21 +42,21 @@
     @*--------------------------------------------------------------script for collapse tilausrivit------------------------------------------------*@
     <script type="text/javascript">
 
-                $(function () {
-                    $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
-                        let orderId = $(this).data("orderid");
-                        //alert("Klikkasit tilausnumeroa: " + orderId);
-                        var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
-                        $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
-                        var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
-                        console.log(url);
-                        console.log($detailDiv);
-                        $.get(url, function (data) {                                /*kutsutaan kontrollerin */
-                            $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
-                        });
-
-                    });
+        $(function () {
+            $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
+                let orderId = $(this).data("orderid");
+                //alert("Klikkasit tilausnumeroa: " + orderId);
+                var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
+                $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
+                var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
+                console.log(url);
+                console.log($detailDiv);
+                $.get(url, function (data) {                                /*kutsutaan kontrollerin */
+                    $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
                 });
+
+            });
+        });
     </script>
 }
 @{
@@ -118,15 +100,15 @@
                     <div class="bg-warning font-weight-bold " style="width:@(i)%">
                         @*---------------------------------------------------------------------------------for each textfield we check if it is the one where we typedlast, and if it is , we set focus there ----------------------------------------------------*@
                         <text>Customer<br></text>
-                           @if (ViewBag.currentTextfield=="searchAsiakas")
-                               {
-                                @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas", autofocus = "autofocus" })
-                               }
-                               else
-                               {
-                                @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas" })
+                        @if (ViewBag.currentTextfield == "searchAsiakas")
+                        {
+                            @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas", autofocus = "autofocus", SelectionRange = (0, 2) })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas" })
 
-                               }
+                        }
                     </div>
 
                     <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
@@ -143,12 +125,12 @@
                         <text>Ship city<br></text>
                         @if (ViewBag.currentTextfield == "searchKaupunki")
                         {
-                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus",  })
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus", SelectionRange = (0, 2) })
                         }
                         else
                         {
                             @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki" })
-                                                    }
+                        }
                     </div>
 
                     <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
@@ -166,11 +148,11 @@
                         <text>Shipper name<br></text>
                         @if (ViewBag.currentTextfield == "searchRahtari")
                         {
-                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", setSelectionEnd = (string)ViewBag.currentRahtari.length})
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", setSelectionEnd = (string)ViewBag.currentRahtari.length })
                         }
                         else
                         {
-                        @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
                         }
                     </div>
                     <p class="px-2"><input id="autoSubmitBtn" type="submit" value="Search" class="form-control" /></p>
