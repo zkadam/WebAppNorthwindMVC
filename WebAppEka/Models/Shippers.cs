@@ -11,8 +11,7 @@ namespace WebAppEka.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Shippers
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +21,6 @@ namespace WebAppEka.Models
         }
     
         public int ShipperID { get; set; }
-        [Required]
         public string CompanyName { get; set; }
         public string Phone { get; set; }
         public Nullable<int> RegionID { get; set; }

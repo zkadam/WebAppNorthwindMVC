@@ -12,10 +12,9 @@ namespace WebAppEka.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Logins
+    public partial class Products_Above_Average_Price
     {
-        public int LoginId { get; set; }
-        public string UserName { get; set; }
-        public string PassWord { get; set; }
+        public string ProductName { get; set; }
+        public Nullable<decimal> UnitPrice { get; set; }
     }
 }

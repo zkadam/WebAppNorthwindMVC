@@ -12,10 +12,11 @@ namespace WebAppEka.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Logins
+    public partial class Sales_by_Category
     {
-        public int LoginId { get; set; }
-        public string UserName { get; set; }
-        public string PassWord { get; set; }
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
+        public string ProductName { get; set; }
+        public Nullable<decimal> ProductSales { get; set; }
     }
 }

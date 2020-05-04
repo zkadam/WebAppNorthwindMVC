@@ -12,10 +12,11 @@ namespace WebAppEka.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Logins
+    public partial class Sales_Totals_by_Amount
     {
-        public int LoginId { get; set; }
-        public string UserName { get; set; }
-        public string PassWord { get; set; }
+        public Nullable<decimal> SaleAmount { get; set; }
+        public int OrderID { get; set; }
+        public string CompanyName { get; set; }
+        public Nullable<System.DateTime> ShippedDate { get; set; }
     }
 }

@@ -147,16 +147,28 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Alphabetical_list_of_products.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categories.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category_Sales_for_1997.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Contacts.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Current_Product_List.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomerDemographics.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Customer_and_Suppliers_by_City.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\cust_apu.cs">
@@ -169,6 +181,9 @@
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\emp_apu.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Invoices.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Logins.cs">
@@ -192,16 +207,49 @@
     <Compile Include="Models\Orders.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Orders_Qry.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Order_Details.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order_Details_Extended.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order_Subtotals.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Products.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductsDailySales.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Products_Above_Average_Price.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Products_by_Category.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product_Sales_for_1997.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Region.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sales_by_Category.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sales_Totals_by_Amount.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Shippers.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Summary_of_Sales_by_Quarter.cs">
+      <DependentUpon>NorthwindModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Summary_of_Sales_by_Year.cs">
       <DependentUpon>NorthwindModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Suppliers.cs">
