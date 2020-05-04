@@ -149,7 +149,9 @@ namespace WebAppEka.Controllers
             ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
             return View(orders);
         }
-
+        
+        
+        
         // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -168,7 +170,41 @@ namespace WebAppEka.Controllers
             ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
             return View(orders);
         }
+        //-----------------------------------------------------------------------------------------Modal edit-----------------------------------------------------------------------------
+        // GET: Orders/Edit/5
+        public ActionResult _ModalEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Orders orders = db.Orders.Find(id);
+            if (orders == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName", orders.CustomerID);
+            ViewBag.EmployeeID = new SelectList(db.Employees, "EmployeeID", "LastName", orders.EmployeeID);
+            ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
+            return PartialView("_ModalEdit", orders);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _ModalEdit([Bind(Include = "OrderID,CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipVia,Freight,ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry")] Orders orders)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(orders).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName", orders.CustomerID);
+            ViewBag.EmployeeID = new SelectList(db.Employees, "EmployeeID", "LastName", orders.EmployeeID);
+            ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
+            return PartialView("_ModalEdit",orders);
+        }
+        //-------------------------------------------------------------------------------------------------delete-------------------------------------------------------------------------------
         // GET: Orders/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -194,7 +230,7 @@ namespace WebAppEka.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        //----------------------------viewmodels ordersummary--------------------------------------//
+        //--------------------------------------------------------------------------------------------------viewmodels ordersummary--------------------------------------------------------------------------------------//
 
         public ActionResult Ordersummary()
         {
@@ -244,6 +280,92 @@ namespace WebAppEka.Controllers
 
             return View(orderSummary);
         }
+
+        //--------------------------------------------------------------------------------------------------order headers--------------------------------------------------------------------------------------//
+
+        public ActionResult TilausOtsikot(string searchAsiakas, string searchKaupunki, string searchRahtari, string currentTextfield, int? page, int? pagesize)
+        {
+       
+            // jos laitettiin joku searchiin, mene 1.sivuun
+
+            //hakufiltterin muistiin
+            if ((searchAsiakas != null)&& (searchKaupunki != null) && (searchRahtari != null))
+            {
+                page = 1;
+            }
+        //if arvo is null, we change it to blank
+            searchAsiakas = (searchAsiakas ?? "");
+            searchKaupunki = (searchKaupunki ?? "");
+            searchRahtari = (searchRahtari ?? "");
+           //we set the focus of textbox for the last entery or to asiakas
+            currentTextfield = (currentTextfield ?? "searchAsiakas");
+
+            //sending the values to browser, so it fills up the fields of textboxes
+
+            ViewBag.currentAsiakas = searchAsiakas;
+            ViewBag.currentKaupunki = searchKaupunki;
+            ViewBag.currentRahtari = searchRahtari;
+
+
+//sending browser where was the last search input
+            ViewBag.currentTextfield = currentTextfield;
+
+            //-----------------------------------------------------------filtering with jquery-----------------------------------------------------------------------------------------------------//
+            var orders = from ord in db.Orders.Include(ord => ord.Customers).Include(ord => ord.Employees).Include(ord => ord.Shippers)
+                         
+                         where (ord.Customers.CompanyName.Contains(searchAsiakas) && ord.Customers.City.Contains(searchKaupunki) && ord.Shippers.CompanyName.Contains(searchRahtari))
+                         orderby ord.OrderDate
+                         select ord;
+
+
+
+            int pageSize = (pagesize ?? 10);
+            int pageNumber = (page ?? 1);
+            return View(orders.ToPagedList(pageNumber, pageSize));
+        }
+
+        //---------------------------------------------------------------- tilausotsikot masterView tehtävän varten AZ---------------------------------------------------------------------------------------------------//
+        public ActionResult _TilausRivit(int? orderid)
+        {
+
+
+
+
+            var orderRowsList = from od in db.Order_Details
+                               join p in db.Products on od.ProductID equals p.ProductID
+                               join c in db.Categories on p.CategoryID equals c.CategoryID
+                               where od.OrderID== orderid
+                               //orderby lause
+
+
+
+                               select new OrderRows
+                              {
+
+                                  OrderID = (int)od.OrderID,
+                                  ProductID = (int)p.ProductID,
+                                  UnitPrice = (float)p.UnitPrice,
+                                  Quantity = (int)od.Quantity,
+                                  Discount = (float)od.Discount,
+                                  ProductName = (string)p.ProductName,
+                                  SupplierID = (int)p.SupplierID,
+                                  CategoryID = (int)c.CategoryID,
+                                  QuantityPerUnit = (string)p.QuantityPerUnit,
+                                  UnitsInStock = (int)p.UnitsInStock,
+                                  UnitsOnOrder = (int)p.UnitsOnOrder,
+                                  ReorderLevel = (int)p.ReorderLevel,
+                                  Discontinued = (bool)p.Discontinued,
+                                  ImageLink = (string)p.ImageLink,
+                                  CategoryName = (string)c.CategoryName,
+                                  Description = (string)c.Description,
+                                  // Picture = (Image)p.Picture,
+                              };
+
+            return PartialView(orderRowsList);
+
+
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

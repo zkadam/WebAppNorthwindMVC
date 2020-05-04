@@ -1,0 +1,213 @@
+﻿@model PagedList.IPagedList<WebAppEka.Models.Orders>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+@section scripts{
+
+
+
+
+
+    @*--------------------------------------------------updateing the last text field*@  
+
+    <script type="text/javascript">
+
+        $(".formTBoxes").on("change paste keyup", function () {
+
+            //passing the id as the value of the active searchbox
+            document.getElementById("lastTextEnter").value = $(event.target)[0].id;
+
+            //------------------------------------------here is link for autosubmitting the form, but autofocus and index is not working well
+            //$("#autosubmitChange").submit();
+        });
+
+
+
+    </script>
+
+
+
+    @*--------------------------------------------------------------script for collapse tilausrivit------------------------------------------------*@
+    <script type="text/javascript">
+
+        $(function () {
+            $(".showOrderClass").click(function () {                             /*kuuntelee elementi joiden luokka on "showOrderClass"*/
+                let orderId = $(this).data("orderid");
+                //alert("Klikkasit tilausnumeroa: " + orderId);
+                var url = "/Orders/_TilausRivit/?OrderID=" + orderId;           /*luodaan kontrollerin url viittaus*/
+                $("#orderDetails_" + orderId).append(" <b>Ladataan tilauksen " + orderId + "rivejä...</b>");
+                var $detailDiv = $("#orderDetails_" + orderId);                 /*otetaan klikatun tilausotsikkorivin id talteen JQuery - muuttujaan $detailDiv*/
+                console.log(url);
+                console.log($detailDiv);
+                $.get(url, function (data) {                                /*kutsutaan kontrollerin */
+                    $detailDiv.replaceWith(data);                               /*korvataan $detailDiv - muuttujan elementin sisältö kontrollerin palauttamalla partial view:llä*/
+                });
+
+            });
+        });
+    </script>
+}
+@{
+    ViewBag.Title = "TilausOtsikot";
+}
+
+
+
+
+
+
+<h2>TilausOtsikot</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+
+
+@*----------------------------------------------------------------------the headers typed manually -formed, so they look different then data fields ZK-----------------------------------*@
+
+<div class="container-fluid">
+
+    <div class="card-header container-fluid bg-warning">
+
+        <a class="card-link">
+
+            @using (Html.BeginForm("TilausOtsikot", "Orders", FormMethod.Get, new { @id = "autosubmitChange" }))
+            {
+
+                @Html.Hidden("currentTextfield", ViewBag.currentTextfield as string, new { @class = "form-control formTBoxes hidden", @id = "lastTextEnter" })
+
+                <div class="input-group" style="position:sticky" id="FilterForm">
+                    <div class="bg-warning font-weight-bold" style="max-width:unset; padding-right:33px">
+                        <text>Order<br></text><text class="font-weight-lighter">Sort:</text>
+
+                    </div>
+                    @*<input type="text" class="form-control bg-warning font-weight-bold px-2" value="Customer" disabled>*@
+                    @{ int i = 13; }
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        @*---------------------------------------------------------------------------------for each textfield we check if it is the one where we typedlast, and if it is , we set focus there ----------------------------------------------------*@
+                        <text>Customer<br></text>
+                        @if (ViewBag.currentTextfield == "searchAsiakas")
+                        {
+                            @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas", autofocus = "autofocus", SelectionRange = (0, 2) })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchAsiakas", ViewBag.currentAsiakas as string, new { @class = "form-control formTBoxes", id = "searchAsiakas" })
+
+                        }
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>ShipName<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Address<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        <text>Ship city<br></text>
+                        @if (ViewBag.currentTextfield == "searchKaupunki")
+                        {
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki", autofocus = "autofocus", SelectionRange = (0, 2) })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchKaupunki", ViewBag.currentKaupunki as string, new { @class = "form-control formTBoxes", id = "searchKaupunki" })
+                        }
+                    </div>
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Country<br></text>
+
+                    </div>
+
+
+                    <div class="bg-warning font-weight-bold px-2" style="width:@(i)%">
+                        <text>Ship Region<br></text>
+
+                    </div>
+
+                    <div class="bg-warning font-weight-bold " style="width:@(i)%">
+                        <text>Shipper name<br></text>
+                        @if (ViewBag.currentTextfield == "searchRahtari")
+                        {
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari", autofocus = "autofocus", setSelectionEnd = (string)ViewBag.currentRahtari.length })
+                        }
+                        else
+                        {
+                            @Html.TextBox("searchRahtari", ViewBag.currentRahtari as string, new { @class = "form-control formTBoxes", id = "searchRahtari" })
+                        }
+                    </div>
+                    <p class="px-2"><input id="autoSubmitBtn" type="submit" value="Search" class="form-control" /></p>
+
+                </div>
+
+            }
+
+
+    </div>
+
+
+</div>
+@*-----------------------------------------------------------------------------------------------------------------*@
+
+@*----------------------------------filter forms ----------------------------------- ZK*@
+
+<div id="accordion">
+
+
+    @*----------------------------------here comes the fields, with model, each has uniq href generated with model in order to call the collapse part ----------------------------------- ZK*@
+
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                <a class="card-link showOrderClass" data-orderid="@item.OrderID" data-toggle="collapse" href="#collapse_@item.OrderID">
+                    <form>
+                        <div class="input-group bg-light">
+                            <div class="input-group-prepend'">
+                                <span class="input-group-text ">@Html.DisplayTextFor(modelItem => item.OrderID)</span>
+                            </div>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Customers.CompanyName)" disabled>
+
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipName)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipAddress)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCity)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipCountry)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.ShipRegion)" disabled>
+                            <input type="text" class="form-control px-2" value="@Html.DisplayTextFor(modelItem =>item.Shippers.CompanyName)" disabled>
+
+
+
+                        </div>
+                    </form>
+                </a>
+            </div>
+            @*here comes te div which is collapsed ZK*@
+            <div id="collapse_@item.OrderID" class="collapse" style=" background-color:#cceeff" data-parent="#accordion">
+                <div class="card-body">
+
+                    <div id="orderDetails_@item.OrderID"></div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+</div>
+
+<br />
+Page@(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("TilausOtsikot", new { page, sortOrder = ViewBag.currentSort, searchAsiakas = ViewBag.currentAsiakas, searchRahtari = ViewBag.currentRahtari, searchKaupunki = ViewBag.currentKaupunki })) 

@@ -11,6 +11,37 @@
 
 @section scripts {
     <script type="text/javascript">
+        $(function () {
+            $(".getOrderId").click(function () {
+                let orderId = $(this).data("orderid");
+                console.log("klikkasit tilausnumeroa: " + orderId);
+                var url = "/Orders/_ModalEdit/?id=" + orderId;
+                console.log(url);
+
+                $("#orderEdit").append(" <b>Avataan tilauksen " + orderId + " muokkausikkuna...</b>");
+                //gettinng the view to the div
+                var $detailDivEdit = $("#orderEdit");
+                $.get(url, function (data) {
+                    $detailDivEdit.replaceWith(data);
+                    $('#ModalOrderEdit').modal('show');
+                });
+
+            });
+       
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+    <script type="text/javascript">
         $("#singleSelectShipperID").on("change", function () {
             //getting value to apumuuttaja
             var selValue = $("#singleSelectShipperID").val();
@@ -26,6 +57,10 @@
     @Html.ActionLink("Create New", "Create")
     @Html.ActionLink("Tilausten yhteenveto", "Ordersummary")
 </p>
+
+@*-----------------------------------------------------------------------------here gonna come the edit popup modal*@
+<div id="orderEdit"></div>
+
 @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
 {
     <div class="input-group">
@@ -47,70 +82,48 @@
 }
 <table class="table">
     <tr>
+        <th> OrderID</th>
         <th> OrderDate</th>
         <th>RequiredDate</th>
         <th>ShippedDate</th>
         <th>Freight</th>
         <th>ShipName</th>
-        @*<th>ShipAddress</th>
+        <th>ShipAddress</th>
         <th>ShipCity</th>
         <th>ShipRegion</th>
         <th>ShipPostalCode</th>
         <th>ShipCountry</th>
         <th>Customers.CompanyName</th>
-        <th>Employees.LastName</th>*@
+        <th>Employees.LastName</th>
         <th>Shippers.CompanyName</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequiredDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShippedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Freight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipName)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.ShipAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipCity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipRegion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipPostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipCountry)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customers.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employees.LastName)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Shippers.CompanyName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
-            </td>
-        </tr>
+<tr>
+    <td><button class="getOrderId fa fa-edit" data-orderid="@item.OrderID"></button></td>
+    <td>@Html.DisplayFor(modelItem => item.OrderID)</td>
+    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+    <td>@Html.DisplayFor(modelItem => item.RequiredDate)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShippedDate)</td>
+    <td>@Html.DisplayFor(modelItem => item.Freight)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipName)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipAddress)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipCity)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipRegion)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipPostalCode)</td>
+    <td>@Html.DisplayFor(modelItem => item.ShipCountry)</td>
+    <td>@Html.DisplayFor(modelItem => item.Customers.CompanyName)</td>
+    <td>@Html.DisplayFor(modelItem => item.Employees.LastName)</td>
+    <td>@Html.DisplayFor(modelItem => item.Shippers.CompanyName)</td>
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
+    </td>
+</tr>
     }
 
 </table>
