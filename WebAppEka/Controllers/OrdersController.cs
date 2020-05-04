@@ -149,7 +149,9 @@ namespace WebAppEka.Controllers
             ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
             return View(orders);
         }
-
+        
+        
+        
         // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -168,7 +170,41 @@ namespace WebAppEka.Controllers
             ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
             return View(orders);
         }
+        //-----------------------------------------------------------------------------------------Modal edit-----------------------------------------------------------------------------
+        // GET: Orders/Edit/5
+        public ActionResult _ModalEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Orders orders = db.Orders.Find(id);
+            if (orders == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName", orders.CustomerID);
+            ViewBag.EmployeeID = new SelectList(db.Employees, "EmployeeID", "LastName", orders.EmployeeID);
+            ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
+            return PartialView("_ModalEdit", orders);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _ModalEdit([Bind(Include = "OrderID,CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipVia,Freight,ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry")] Orders orders)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(orders).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName", orders.CustomerID);
+            ViewBag.EmployeeID = new SelectList(db.Employees, "EmployeeID", "LastName", orders.EmployeeID);
+            ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName", orders.ShipVia);
+            return PartialView("_ModalEdit",orders);
+        }
+        //-------------------------------------------------------------------------------------------------delete-------------------------------------------------------------------------------
         // GET: Orders/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -264,6 +300,7 @@ namespace WebAppEka.Controllers
            //we set the focus of textbox for the last entery or to asiakas
             currentTextfield = (currentTextfield ?? "searchAsiakas");
 
+            //sending the values to browser, so it fills up the fields of textboxes
 
             ViewBag.currentAsiakas = searchAsiakas;
             ViewBag.currentKaupunki = searchKaupunki;
@@ -273,7 +310,7 @@ namespace WebAppEka.Controllers
 //sending browser where was the last search input
             ViewBag.currentTextfield = currentTextfield;
 
-            //----------------------------------------------------------------------------------------------------------------------------------------------------------------//
+            //-----------------------------------------------------------filtering with jquery-----------------------------------------------------------------------------------------------------//
             var orders = from ord in db.Orders.Include(ord => ord.Customers).Include(ord => ord.Employees).Include(ord => ord.Shippers)
                          
                          where (ord.Customers.CompanyName.Contains(searchAsiakas) && ord.Customers.City.Contains(searchKaupunki) && ord.Shippers.CompanyName.Contains(searchRahtari))
@@ -282,17 +319,12 @@ namespace WebAppEka.Controllers
 
 
 
-
-
-
-
-
-            //-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
             int pageSize = (pagesize ?? 10);
             int pageNumber = (page ?? 1);
             return View(orders.ToPagedList(pageNumber, pageSize));
-        }    // GET: tilausotsikot masterView tehtävän varten AZ
+        }
 
+        //---------------------------------------------------------------- tilausotsikot masterView tehtävän varten AZ---------------------------------------------------------------------------------------------------//
         public ActionResult _TilausRivit(int? orderid)
         {
 
