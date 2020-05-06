@@ -36,7 +36,7 @@ namespace WebAppEka.Controllers
             }
             //string joinnilla viedään kaikki list elementtit kaks string riviin x ja y varteen- laitetaan pilkut ja qmarksit väliin
             categoryNameList = "'" + string.Join("','", CategorySalesList.Select(n=>n.CategoryName).ToList())+ "'";
-            categorySalesList =string.Join(",", CategorySalesList.Select(n=>n.CategoryName).ToList());
+            categorySalesList =string.Join(",", CategorySalesList.Select(n=>n.CategorySales).ToList());
 
             ViewBag.categoryName = categoryNameList;
             ViewBag.categorySales = categorySalesList;

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebAppEka.Models;     //it looks from models
+using WebAppEka.ViewModels;
 using PagedList;
+using System.Data.Entity.SqlServer;
 
 namespace WebAppEka.Controllers
 {
@@ -188,6 +190,28 @@ namespace WebAppEka.Controllers
             List<Products> tuotteet = db.Products.ToList();
             db.Dispose();
             return View(tuotteet);
+        }
+        public ActionResult _ProductSalesPerDate(string productName)
+        {
+            //just to show something if productname is null, otherwise maybe it is better to use id as parameter
+            if (String.IsNullOrEmpty(productName)) { productName = "Lakkalikööri"; }
+
+            List<DailyProductSales> dailyProductSalesList = new List<DailyProductSales>();
+            northwindEntities db = new northwindEntities();     //needs a using sentence
+
+            var orderSummary = from pds in db.ProductsDailySales
+                               where pds.ProductName == productName
+                               orderby pds.OrderDate
+                               select new DailyProductSales
+                               {
+                                   OrderDate = SqlFunctions.DateName("year", pds.OrderDate) + "." + SqlFunctions.DateName("MM", pds.OrderDate) + "." + SqlFunctions.DateName("dar", pds.OrderDate),
+                                   DailySales = (float)pds.DailySales,
+                                   ProductName = pds.ProductName
+                               };
+
+
+           
+            return Json(orderSummary, JsonRequestBehavior.AllowGet);
         }
     }
 }

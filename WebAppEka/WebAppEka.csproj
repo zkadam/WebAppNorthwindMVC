@@ -266,6 +266,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CategorySalesClass.cs" />
+    <Compile Include="ViewModels\DailyProductSales.cs" />
     <Compile Include="ViewModels\OrderRows.cs" />
     <Compile Include="ViewModels\OrderSummaryData.cs" />
     <Compile Include="ViewModels\ProdsUpp.cs" />
@@ -1019,6 +1020,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Statistics\CategorySales.cshtml" />
     <Content Include="Views\Prodsupp\Index - Copy.cshtml" />
+    <Content Include="Views\Products\_ProductSalesPerDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
