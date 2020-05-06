@@ -3,6 +3,7 @@
 @model PagedList.IPagedList<WebAppEka.Models.Products>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 
@@ -167,7 +168,7 @@
 <tr>
 
     @*-----------------------button class referenced in jquery,*@ 
-    <td><button class="btn-dark getProductName fas fa-chart-bar" style="border-radius:4px" data-productname="@item.ProductName"></button></td>
+    <td><button class="btn-dark getProductName" style="border-radius:4px" data-productname="@item.ProductName"><i class="fas fa-chart-bar"></i></button></td>
     <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
     <td>@Html.DisplayFor(modelItem => item.QuantityPerUnit)</td>
     <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>

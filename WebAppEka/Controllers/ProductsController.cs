@@ -204,7 +204,7 @@ namespace WebAppEka.Controllers
                                orderby pds.OrderDate
                                select new DailyProductSales
                                {
-                                   OrderDate = SqlFunctions.DateName("year", pds.OrderDate) + "." + SqlFunctions.DateName("MM", pds.OrderDate) + "." + SqlFunctions.DateName("dar", pds.OrderDate),
+                                   OrderDate = SqlFunctions.DateName("year", pds.OrderDate) + "." + SqlFunctions.DateName("MM", pds.OrderDate) + "." + SqlFunctions.DateName("day", pds.OrderDate),
                                    DailySales = (float)pds.DailySales,
                                    ProductName = pds.ProductName
                                };
