@@ -35,7 +35,7 @@
         <AssociationConnector Association="northwindModel.FK_Territories_Region" ManuallyRouted="false" />
         <AssociationConnector Association="northwindModel.CustomerCustomerDemo" ManuallyRouted="false" />
         <AssociationConnector Association="northwindModel.EmployeeTerritories" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="northwindModel.Alphabetical_list_of_products" Width="1.5" PointX="5.375" PointY="11.75" />
+        <EntityTypeShape EntityType="northwindModel.Alphabetical_list_of_products" Width="1.5" PointX="5" PointY="11.5" />
         <EntityTypeShape EntityType="northwindModel.Category_Sales_for_1997" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="northwindModel.Current_Product_List" Width="1.5" PointX="12.375" PointY="3.75" />
         <EntityTypeShape EntityType="northwindModel.Customer_and_Suppliers_by_City" Width="1.5" PointX="12.375" PointY="6.75" />
