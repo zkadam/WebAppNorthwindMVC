@@ -56,7 +56,7 @@ namespace WebAppEka.Controllers
             {
                 db.Products.Add(products);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Products");
             }
 
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
@@ -92,7 +92,7 @@ namespace WebAppEka.Controllers
             {
                 db.Entry(products).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Products");
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
             ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "CompanyName", products.SupplierID);
@@ -122,7 +122,7 @@ namespace WebAppEka.Controllers
             Products products = db.Products.Find(id);
             db.Products.Remove(products);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Products");
         }
 
         public ActionResult ProductsAndSuppliers()

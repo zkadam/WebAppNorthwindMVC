@@ -101,7 +101,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "Prodsupp")
 </p>
 @using (Html.BeginForm("Index", "Products", FormMethod.Get))
 {
@@ -181,10 +181,9 @@
     <td>@Html.DisplayFor(modelItem => item.Suppliers.CompanyName)</td>
 
     <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
-        @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
-    </td>
+        @Html.ActionLink("Edit", "Edit", "Prodsupp", new { id = item.ProductID }, null) |
+        @Html.ActionLink("Details", "Details", "Prodsupp", new { id = item.ProductID }, null) |
+        @Html.ActionLink("Delete", "Delete", "Prodsupp", new { id = item.ProductID }, null) 
 </tr>
 }
 
